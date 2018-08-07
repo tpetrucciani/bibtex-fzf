@@ -1,0 +1,7 @@
+[package]
+name = "parsebib"
+version = "0.1.0"
+authors = ["Tommaso Petrucciani <tommaso.petrucciani@gmail.com>"]
+
+[dependencies]
+nom-bibtex = "0.2.0"

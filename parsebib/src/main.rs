@@ -26,7 +26,6 @@ fn main() {
     }
     let filename = &args[1];
     let text = fs::read_to_string(filename).expect("Unable to read file");
-    println!("{}", text);
     let bibtex = Bibtex::parse(&text).unwrap();
     let bib = bibtex.bibliographies();
     for e in bib {

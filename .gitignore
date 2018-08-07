@@ -1,2 +1,3 @@
 /parsebib/target
 **/*.rs.bk
+/run-parsebib

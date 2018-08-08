@@ -1,0 +1,13 @@
+#! /usr/bin/env bash
+
+script_dir="$(dirname "$(realpath "$0")")"
+parsebib="$script_dir"/run-parsebib
+
+if [[ $# -ne 1 ]]; then
+  printf "Usage: %s <filename>\n" "$(basename $0)"
+  exit 1
+fi
+
+if output=$("$parsebib" "$1"); then
+  printf '%s' "$output" | fzf
+fi

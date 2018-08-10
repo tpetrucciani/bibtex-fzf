@@ -1,13 +1,41 @@
 #! /usr/bin/env bash
 
-script_dir="$(dirname "$(realpath "$0")")"
-parsebib="$script_dir"/run-parsebib
-
 if [[ $# -ne 1 ]]; then
   printf "Usage: %s <filename>\n" "$(basename $0)"
   exit 1
 fi
 
-if output=$("$parsebib" "$1"); then
-  printf '%s' "$output" | fzf
-fi
+script_dir="$(dirname "$(realpath "$0")")"
+parsebib="$script_dir"/run-parsebib
+
+header=$(cat << END
+↩ : copy key · ^O: open attached file
+END
+)
+
+choose() {
+  fzf --header="$header" --reverse --expect=ctrl-o
+}
+
+line=$(
+  "$parsebib" "$1" |
+  choose
+) || exit 0
+
+mode=$(head -1 <<< "$line")
+key=$(tail -1 <<< "$line" | { read key _ ; echo $key ; })
+
+case $mode in
+  ctrl-o)
+    # bib_dirname="$(dirname "$1")"
+    bib_dirname="/Users/tom/Documents/Informatica/Articoli"
+    filename=$(
+      find "$bib_dirname" -name '*'"$key"'*.pdf' |
+      fzf --reverse --select-1
+    ) && open "$filename"
+    ;;
+  *)
+    printf "%s" "$key" | pbcopy
+    printf "Copied key \`%s\` to clipboard.\n" "$key"
+    ;;
+esac

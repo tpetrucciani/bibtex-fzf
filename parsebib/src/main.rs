@@ -9,7 +9,7 @@ fn get_title<'a>(e: &'a Bibliography) -> &'a str {
             return v;
         }
     }
-    panic!("Missing title in BibTeX entry")
+    panic!("Missing title in BibTeX entry `{}`", e.citation_key())
 }
 
 fn entry_to_string(e: &Bibliography) -> String {

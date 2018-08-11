@@ -1,12 +1,14 @@
 #! /usr/bin/env bash
 
-if [[ $# -ne 1 ]]; then
-  printf "Usage: %s <filename>\n" "$(basename $0)"
+if [[ $# -ne 1 ]] && [[ $# -ne 2 ]]; then
+  printf "Usage: %s <filename> [<query>]\n" "$(basename $0)"
   exit 1
 fi
 
 script_dir="$(dirname "$(realpath "$0")")"
 parsebib="$script_dir"/run-parsebib
+
+query="$2"
 
 header=$(cat << END
 ↩ : copy key · ^O: open attached file
@@ -14,7 +16,7 @@ END
 )
 
 choose() {
-  fzf --header="$header" --reverse --expect=ctrl-o
+  fzf --header="$header" --reverse --expect=ctrl-o --query="$query"
 }
 
 line=$(
@@ -27,10 +29,10 @@ key=$(tail -1 <<< "$line" | { read key _ ; echo $key ; })
 
 case $mode in
   ctrl-o)
-    # bib_dirname="$(dirname "$1")"
-    bib_dirname="/Users/tom/Documents/Informatica/Articoli"
+    bib_dirname="$(dirname "$1")"
     filename=$(
-      find "$bib_dirname" -name '*'"$key"'*.pdf' |
+      cd "$bib_dirname" &&
+      find . -name '*'"$key"'*.pdf' |
       fzf --reverse --select-1
     ) && open "$filename"
     ;;

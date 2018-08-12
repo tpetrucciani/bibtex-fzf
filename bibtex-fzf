@@ -34,7 +34,7 @@ case $mode in
       cd "$bib_dirname" &&
       find . -name '*'"$key"'*.pdf' |
       fzf --reverse --select-1
-    ) && open "$filename"
+    ) && open "$bib_dirname"/"$filename"
     ;;
   *)
     printf "%s" "$key" | pbcopy

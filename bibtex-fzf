@@ -33,6 +33,7 @@ case $mode in
     filename=$(
       cd "$bib_dirname" &&
       find . -name '*'"$key"'*.pdf' |
+      sed 's/^\.\///' |
       fzf --reverse --select-1
     ) && open "$bib_dirname"/"$filename"
     ;;

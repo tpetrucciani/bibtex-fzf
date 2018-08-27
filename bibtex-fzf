@@ -45,7 +45,7 @@ key=$(tail -1 <<< "$line" | { read key _ ; echo $key ; })
 
 case $mode in
   ctrl-o)
-    bib_dirname="$(dirname "$1")"
+    bib_dirname="$(dirname "$filename")"
     filename=$(
       cd "$bib_dirname" &&
       find . -name '*'"$key"'*.pdf' |

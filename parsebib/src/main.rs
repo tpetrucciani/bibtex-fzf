@@ -16,7 +16,7 @@ fn entry_to_string(e: &Bibliography) -> String {
     let key = e.citation_key();
     let title = get_key("title", e);
     let authors = get_key("author", e);
-    return format!("{} -- {} -- {}", key, title, authors);
+    return format!("{} • {} • {}", key, title, authors);
 }
 
 fn main() {

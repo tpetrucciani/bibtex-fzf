@@ -34,8 +34,9 @@ choose() {
   fzf --header="$header" --reverse --expect=ctrl-o --query="$query"
 }
 
+contents=$("$parsebib" "$filename") &&
 line=$(
-  "$parsebib" "$filename" |
+  printf "%s\n" "$contents" |
   choose
 ) || exit 0
 

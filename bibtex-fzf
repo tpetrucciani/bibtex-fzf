@@ -1,14 +1,29 @@
 #! /usr/bin/env bash
 
-if [[ $# -ne 1 ]] && [[ $# -ne 2 ]]; then
-  printf "Usage: %s <filename> [<query>]\n" "$(basename $0)"
+filename=
+query=
+
+case $# in
+  0)
+    filename="$BIBTEX_FZF_DEFAULT_BIB_FILE"
+    ;;
+  1)
+    filename="$1"
+    ;;
+  2)
+    filename="$1"
+    query="$2"
+    ;;
+esac
+
+if [[ -z "$filename" ]]; then
+  printf "Usage: %s [<filename>] [<query>]\n" "$(basename $0)"
+  printf "No arguments: opens \$BIBTEX_FZF_DEFAULT_BIB_FILE\n" "$(basename $0)"
   exit 1
 fi
 
 script_dir="$(dirname "$(realpath "$0")")"
 parsebib="$script_dir"/run-parsebib
-
-query="$2"
 
 header=$(cat << END
 ↩ : copy key · ^O: open attached file
@@ -20,7 +35,7 @@ choose() {
 }
 
 line=$(
-  "$parsebib" "$1" |
+  "$parsebib" "$filename" |
   choose
 ) || exit 0
 

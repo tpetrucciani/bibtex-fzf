@@ -3,19 +3,20 @@ extern crate nom_bibtex;
 use nom_bibtex::*;
 use std::fs;
 
-fn get_title<'a>(e: &'a Bibliography) -> &'a str {
+fn get_key<'a>(key: &str, e: &'a Bibliography) -> &'a str {
     for (k, v) in e.tags() {
-        if k == "title" {
+        if k == key {
             return v;
         }
     }
-    panic!("Missing title in BibTeX entry `{}`", e.citation_key())
+    panic!("Missing key `{}` in BibTeX entry `{}`", key, e.citation_key())
 }
 
 fn entry_to_string(e: &Bibliography) -> String {
     let key = e.citation_key();
-    let title = get_title(e);
-    return format!("{} -- {}", key, title);
+    let title = get_key("title", e);
+    let authors = get_key("author", e);
+    return format!("{} -- {} -- {}", key, title, authors);
 }
 
 fn main() {

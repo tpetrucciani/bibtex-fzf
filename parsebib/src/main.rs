@@ -5,6 +5,15 @@ use colored::*;
 use nom_bibtex::*;
 use std::fs;
 
+fn surname(author: &str) -> String {
+    return author.chars().take_while(|&c| c != ',').collect();
+}
+
+fn parse_authors(authors: &str) -> String {
+    let surnames: Vec<String> = authors.split(" and ").map(surname).collect();
+    return surnames.join(", ");
+}
+
 fn get_key<'a>(key: &str, e: &'a Bibliography) -> &'a str {
     for (k, v) in e.tags() {
         if k == key {
@@ -17,7 +26,7 @@ fn get_key<'a>(key: &str, e: &'a Bibliography) -> &'a str {
 fn entry_to_string(e: &Bibliography) -> String {
     let key = e.citation_key();
     let title = get_key("title", e);
-    let authors = get_key("author", e);
+    let authors = parse_authors(get_key("author", e));
     return format!("{} • {} • {}", key.yellow(), title, authors.italic());
 }
 

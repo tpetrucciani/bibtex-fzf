@@ -1,5 +1,7 @@
+extern crate colored;
 extern crate nom_bibtex;
 
+use colored::*;
 use nom_bibtex::*;
 use std::fs;
 
@@ -16,7 +18,7 @@ fn entry_to_string(e: &Bibliography) -> String {
     let key = e.citation_key();
     let title = get_key("title", e);
     let authors = get_key("author", e);
-    return format!("{} • {} • {}", key, title, authors);
+    return format!("{} • {} • {}", key.yellow(), title, authors.italic());
 }
 
 fn main() {

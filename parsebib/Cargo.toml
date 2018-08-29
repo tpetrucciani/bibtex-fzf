@@ -5,3 +5,4 @@ authors = ["Tommaso Petrucciani <tommaso.petrucciani@gmail.com>"]
 
 [dependencies]
 nom-bibtex = "0.2.0"
+colored = "1.6"

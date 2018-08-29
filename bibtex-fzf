@@ -33,10 +33,11 @@ END
 )
 
 choose() {
-  fzf --header="$header" --reverse --expect=ctrl-o,ctrl-r --query="$query"
+  fzf \
+    --ansi --header="$header" --reverse --expect=ctrl-o,ctrl-r --query="$query"
 }
 
-contents=$("$parsebib" "$filename") &&
+contents=$(CLICOLOR_FORCE=1 "$parsebib" "$filename") &&
 line=$(
   printf "%s\n" "$contents" |
   choose

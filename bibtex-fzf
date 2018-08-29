@@ -1,5 +1,7 @@
 #! /usr/bin/env bash
 
+text_editor=nvim
+
 filename=
 query=
 
@@ -26,12 +28,12 @@ script_dir="$(dirname "$(realpath "$0")")"
 parsebib="$script_dir"/run-parsebib
 
 header=$(cat << END
-↩ : copy key · ^O: open attached file
+↩ : copy key · ^O: open attached file · ^R: reveal in editor
 END
 )
 
 choose() {
-  fzf --header="$header" --reverse --expect=ctrl-o --query="$query"
+  fzf --header="$header" --reverse --expect=ctrl-o,ctrl-r --query="$query"
 }
 
 contents=$("$parsebib" "$filename") &&
@@ -52,6 +54,9 @@ case $mode in
       sed 's/^\.\///' |
       fzf --reverse --select-1
     ) && open "$bib_dirname"/"$filename"
+    ;;
+  ctrl-r)
+    "$text_editor" "$filename" "+/{\\s*$key,"
     ;;
   *)
     printf "%s" "$key" | pbcopy
